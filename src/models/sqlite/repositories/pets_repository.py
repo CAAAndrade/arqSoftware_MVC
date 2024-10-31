@@ -11,4 +11,14 @@ class PetsRepository:
                 pets = database.session.query(PetsTable).all()
                 return pets
             except NoResultFound:
-                raise []
+                return []
+            
+    def delete_pet(self, name: str) -> None:
+        with self.__db_connection as database:
+            try:
+                pet = database.session.query(PetsTable).filter(PetsTable.name == name).one()
+                database.session.delete(pet)
+                database.session.commit()
+            except Exception as exception:
+                database.session.rollback()
+                raise exception
