@@ -1,6 +1,7 @@
 from sqlalchemy.orm.exc import NoResultFound
 from src.models.sqlite.entities.pets import PetsTable
 
+
 class PetsRepository:
     def __init__(self, db_connection) -> None:
         self.__db_connection = db_connection
@@ -12,12 +13,16 @@ class PetsRepository:
                 return pets
             except NoResultFound:
                 return []
-            
-    def delete_pet(self, name: str) -> None:
+
+    def delete_pets(self, name: str) -> None:
         with self.__db_connection as database:
             try:
-                pet = database.session.query(PetsTable).filter(PetsTable.name == name).one()
-                database.session.delete(pet)
+                (
+                    database.session
+                    .query(PetsTable)
+                    .filter(PetsTable.name == name)
+                    .delete()
+                )
                 database.session.commit()
             except Exception as exception:
                 database.session.rollback()
