@@ -1,10 +1,12 @@
 from src.models.sqlite.repositories.people_repository import PeopleRepositoryInterface
 from src.models.sqlite.entities.people import PeopleTable
+from .interfaces.person_finder_controller import PersonFinderControllerInterface
 
 
-class PersonFinderController:
+class PersonFinderController(PersonFinderControllerInterface):
     def __init__(self, people_repository: PeopleRepositoryInterface) -> None:
         self.__people_repository = people_repository
+    # acima temos uma injeçao de dependência
 
     def find_person(self, person_id: int) -> dict:
         person = self.__find_person_in_db(person_id)

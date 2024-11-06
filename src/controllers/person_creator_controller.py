@@ -1,10 +1,12 @@
 from src.models.sqlite.interfaces.people_repository import PeopleRepositoryInterface
+from .interfaces.person_creator_controller import PersonCreatorControllerInterface
 import re
 
 
-class PersonCreatorController:
+class PersonCreatorController(PersonCreatorControllerInterface):
     def __init__(self, people_repository: PeopleRepositoryInterface) -> None:
         self.__people_repository = people_repository
+    #  acima temos uma injeçao de dependência
 
     def create_person(self, person_info: dict) -> dict:
         first_name = person_info["first_name"]

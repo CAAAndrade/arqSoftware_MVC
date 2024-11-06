@@ -1,12 +1,14 @@
 from src.models.sqlite.repositories.pets_repository import PetsRepositoryInterface
 from src.models.sqlite.entities.pets import PetsTable
+from .interfaces.pet_lister_controller import PetListerControllerInterface
 
 
-class PetListerController:
+class PetListerController(PetListerControllerInterface):
     def __init__(self, pets_repository: PetsRepositoryInterface) -> None:
         self.__pets_repository = pets_repository
+        #  acima temos uma injeçao de dependência
 
-    def list_pets(self):
+    def list_pets(self) -> dict:
         pets = self.__get_pets_in_db()
         response = self.__format_response(pets)
         return response
