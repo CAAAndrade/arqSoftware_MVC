@@ -6,6 +6,7 @@ import re
 class PersonCreatorController(PersonCreatorControllerInterface):
     def __init__(self, people_repository: PeopleRepositoryInterface) -> None:
         self.__people_repository = people_repository
+
     #  acima temos uma injeçao de dependência
 
     def create_person(self, person_info: dict) -> dict:
@@ -23,7 +24,10 @@ class PersonCreatorController(PersonCreatorControllerInterface):
 
     def __validate_first_and_last_name(self, first_name: str, last_name: str) -> None:
         # Expressao Regular para caracteres que nao sao letras
-        non_valid_characters = re.compile(r"[^a-zA-Z]")
+        # non_valid_characters = re.compile(r"[^a-zA-Z]")
+        non_valid_characters = re.compile(
+            r"[^a-zA-ZáéíóúãâêîôûàèìòùçÁÉÍÓÚÃÂÊÎÔÛÀÈÌÒÙÇ]"
+        )
 
         if non_valid_characters.search(first_name) or non_valid_characters.search(
             last_name
