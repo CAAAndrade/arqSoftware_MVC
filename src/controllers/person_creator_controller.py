@@ -18,7 +18,7 @@ class PersonCreatorController(PersonCreatorControllerInterface):
 
         self.__validate_first_and_last_name(first_name, last_name)
 
-        self.__insert_person(first_name, last_name, age, pet_id)
+        self.__insert_person_in_db(first_name, last_name, age, pet_id)
 
         formatted_response = self.__format_response(person_info)
         return formatted_response
@@ -35,10 +35,10 @@ class PersonCreatorController(PersonCreatorControllerInterface):
         ):
             raise HttpBadRequest("Nome inválido")
 
-    def __insert_person(
+    def __insert_person_in_db(
         self, first_name: str, last_name: str, age: int, pet_id: int
     ) -> None:
         self.__people_repository.insert_person(first_name, last_name, age, pet_id)
 
     def __format_response(self, person_info: dict) -> dict:
-        return {"data": {"type": "person", "count": 1, "attributes": person_info}}
+        return {"data": {"type": "Person", "count": 1, "attributes": person_info}}

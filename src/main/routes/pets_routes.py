@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from src.errors.error_handle import handle_error
 from src.views.http_types.http_request import HttpRequest
 from src.main.composer.pet_lister_composer import pet_lister_composer
 from src.main.composer.pet_deleter_composer import pet_deleter_composer
@@ -10,19 +11,29 @@ pet_routes_bp = Blueprint("pet_routes", __name__)
 
 @pet_routes_bp.route("/pets", methods=["GET"])
 def list_pets():
-    http_request = HttpRequest()
-    view = pet_lister_composer()
+    try:
+        http_request = HttpRequest()
+        view = pet_lister_composer()
 
-    http_response = view.handle(http_request)
+        http_response = view.handle(http_request)
 
-    return jsonify(http_response.body), http_response.status_code
+        return jsonify(http_response.body), http_response.status_code
+    except Exception as exeption:
+        http_response = handle_error(exeption)
+
+        return jsonify(http_response.body), http_response.status_code
 
 
 @pet_routes_bp.route("/pets/<name>", methods=["DELETE"])
 def delete_pet(name):
-    http_request = HttpRequest(params={"name": name})
-    view = pet_deleter_composer()
+    try: 
+        http_request = HttpRequest(params={"name": name})
+        view = pet_deleter_composer()
 
-    http_response = view.handle(http_request)
+        http_response = view.handle(http_request)
 
-    return jsonify(http_response.body), http_response.status_code
+        return jsonify(http_response.body), http_response.status_code
+    except Exception as exeption:
+        http_response = handle_error(exeption)
+
+        return jsonify(http_response.body), http_response.status_code
